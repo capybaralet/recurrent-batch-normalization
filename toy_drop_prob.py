@@ -526,7 +526,7 @@ if __name__ == "__main__":
         DumpBest("best_valid_training_error_rate", "best.zip"),
         FinishAfter(after_n_epochs=args.num_epochs),
         #FinishIfNoImprovementAfter("best_valid_error_rate", epochs=50),
-        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=40, use_cpickle=True),
+        #Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=100, use_cpickle=True),
         DumpLog("log.pkl", after_epoch=True)])
 
     if not args.cluster:
