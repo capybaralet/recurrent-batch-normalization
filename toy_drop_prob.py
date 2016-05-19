@@ -53,34 +53,33 @@ class Adding(fuel.datasets.Dataset):
     provides_sources = ('x', 'y')
     example_iteration_scheme = None
 
-    def __init__(self, length):
+    def __init__(self, length, num_examples):
         self.length = length
+        self.num_examples = num_examples
         super(Adding, self).__init__()
+        self.gen_data()
+
+    def gen_data(self):
+        self.x = np.zeros((self.length, self.num_examples, 2), dtype=np.float32)
+        self.y = np.zeros((self.num_examples, 1), dtype=np.float32)
+
+        for i in xrange(self.num_examples):
+            vals = np.random.uniform(size=self.length).astype(np.float32)
+            pos1 = np.random.randint(0, self.length / 2 , size = 1)
+            pos2 = np.random.randint(self.length /2, self.length,size = 1)
+            self.x[:, i, 0] = vals
+            self.x[pos1, i, 1] = 1.0
+            self.x[pos2, i, 1] = 1.0
+            self.y[i, 0] = self.x[pos1, i, 0] + self.x[pos2, i, 0]
+
 
     def get_data(self, state=None, request=None):
-        if request is not None:
+
+        if request is None:
             raise ValueError
-
-        vals = np.random.uniform(size = self.length).astype(np.float32)
-        pos1 = np.random.randint(0, self.length / 2 , size = 1)
-        pos2 = np.random.randint(self.length /2, self.length,size = 1)
-
-        x = np.zeros((self.length, 2), dtype=np.float32)
-        x[:, 0] = vals
-        x[pos1, 1] = 1.0
-        x[pos2, 1] = 1.0
-
-        y = x[pos1, 0] + x[pos2, 0]
-        return (x, y)
-
-def get_stream_(length, which_set, batch_size, num_examples=10000):
-    seed = dict(train=1, valid=2, test=3)[which_set]
-    dataset = Adding(length)
-    stream = fuel.streams.DataStream.default_stream(dataset)
-    stream = fuel.transformers.Batch(
-        stream,
-        fuel.schemes.ConstantScheme(batch_size, num_examples))
-    return stream
+        x_b = self.x[:, request, :]
+        y_b = self.y[request, :]
+        return (x_b, y_b)
 
 class SampleDrops2(Transformer):
     def __init__(self, data_stream,
@@ -127,11 +126,10 @@ def get_stream(which_set,
                hidden_dim=256):
 
     np.random.seed(seed=1)
-    dataset = Adding(length)
-    stream = fuel.streams.DataStream.default_stream(dataset)
-    stream = fuel.transformers.Batch(
-        stream,
-        fuel.schemes.ConstantScheme(batch_size, num_examples))
+    dataset = Adding(length, num_examples)
+    stream = fuel.streams.DataStream.default_stream(
+        dataset,
+        iteration_scheme=fuel.schemes.ShuffledScheme(num_examples, batch_size))
     # stream = fuel.streams.DataStream.default_stream(
     #     dataset,
     #     iteration_scheme=fuel.schemes.ShuffledScheme(num_examples, batch_size))
@@ -380,7 +378,7 @@ def construct_graphs(args, nclasses, length):
     drops_state.tag.test_value = batch[2]
     drops_cell.tag.test_value = batch[3]
 
-    x = x.dimshuffle(1, 0, 2)
+    #x = x.dimshuffle(1, 0, 2)
     y = y.flatten(ndim=1)
 
     import pdb; pdb.set_trace()
@@ -483,7 +481,7 @@ if __name__ == "__main__":
 
     train_stream = get_stream(which_set="train",
                               num_examples=args.num_examples,
-                              for_evaluation=False,
+                              for_evaluation=True,
                               length=args.length,
                               batch_size=args.batch_size,
                               drop_prob_state=args.drop_prob_state,
@@ -491,7 +489,7 @@ if __name__ == "__main__":
                               hidden_dim=args.num_hidden)
 
     valid_stream = get_stream(which_set="test",
-                              num_examples=args.num_examples,
+                              num_examples=1000,
                               for_evaluation=True,
                               length=args.length,
                               batch_size=args.batch_size,
@@ -513,24 +511,24 @@ if __name__ == "__main__":
                 channels,
                 prefix="%s_%s" % (which_set, situation), after_epoch=True,
                 data_stream=stream))
-    for situation in "inference".split(): # add inference
-        for which_set in "valid".split():
-            logger.warning("constructing %s %s monitor" % (which_set, situation))
-            channels = list(graphs[situation].outputs)
-            if which_set == "train":
-                stream = train_stream
-            else:
-                stream = valid_stream
-            extensions.append(DataStreamMonitoring(
-                channels,
-                prefix="%s_%s" % (which_set, situation), after_epoch=True,
-                data_stream=stream))#, num_examples=1000)))
+    # for situation in "inference".split(): # add inference
+    #     for which_set in "valid".split():
+    #         logger.warning("constructing %s %s monitor" % (which_set, situation))
+    #         channels = list(graphs[situation].outputs)
+    #         if which_set == "train":
+    #             stream = train_stream
+    #         else:
+    #             stream = valid_stream
+    #         extensions.append(DataStreamMonitoring(
+    #             channels,
+    #             prefix="%s_%s" % (which_set, situation), after_epoch=True,
+    #             data_stream=stream))#, num_examples=1000)))
     extensions.extend([
         TrackTheBest("valid_training_error_rate", "best_valid_training_error_rate"),
         DumpBest("best_valid_training_error_rate", "best.zip"),
         FinishAfter(after_n_epochs=args.num_epochs),
         #FinishIfNoImprovementAfter("best_valid_error_rate", epochs=50),
-        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=1, use_cpickle=True),
+        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=20, use_cpickle=True),
         DumpLog("log.pkl", after_epoch=True)])
 
     if not args.cluster:
