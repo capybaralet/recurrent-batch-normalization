@@ -79,6 +79,7 @@ class Adding(fuel.datasets.Dataset):
             raise ValueError
         x_b = self.x[:, request, :]
         y_b = self.y[request, :]
+
         return (x_b, y_b)
 
 class SampleDrops2(Transformer):
@@ -125,7 +126,6 @@ def get_stream(which_set,
                for_evaluation,
                hidden_dim=256):
 
-    np.random.seed(seed=1)
     dataset = Adding(length, num_examples)
     stream = fuel.streams.DataStream.default_stream(
         dataset,
@@ -148,7 +148,7 @@ def bn(x, gammas, betas, mean, var, args):
     #var = T.maximum(var, args.epsilon)
     #var = var + args.epsilon
 
-    if args.baseline:
+    if True or args.baseline:
         y = x + betas
     else:
         var_corrected = var + args.epsilon
@@ -239,6 +239,9 @@ class LSTM(object):
             g, f, i, o = [fn(ab[:, j * args.num_hidden:(j + 1) * args.num_hidden])
                           for j, fn in enumerate([self.activation] + 3 * [T.nnet.sigmoid])]
 
+            c = dummy_c + f * c + drops_cell * (i * g)
+            h = dummy_h + o * self.activation(c)
+
             if args.elephant:
                 c_n = dummy_c + f * c + drops_cell * (i * g)
             else:
@@ -247,6 +250,7 @@ class LSTM(object):
                 c_normal, c_mean, c_var = bn(c_n, 1.0, p.c_betas, pop_means_c, pop_vars_c, args)
             else:
                 c_normal, c_mean, c_var = bn(c_n, p.c_gammas, p.c_betas, pop_means_c, pop_vars_c, args)
+
             h_n = dummy_h + o * self.activation(c_normal)
 
 
@@ -258,9 +262,9 @@ class LSTM(object):
                 h = h_n
                 c = c_n
 
-            return (h, c, atilde, btilde, c_normal,
-                   a_mean, b_mean, c_mean,
-                    a_var, b_var, c_var)
+            return (h, c, atilde, btilde, c,
+                   a_mean, b_mean, a_mean,
+                    a_var, b_var, a_var)
 
 
         xtilde = T.dot(x, p.Wx)
@@ -299,26 +303,9 @@ class LSTM(object):
                            None, None, None,
                            None, None, None])
 
-        batchstats = OrderedDict()
-        batchstats['a_mean'] = batch_mean_a
-        batchstats['b_mean'] = batch_mean_b
-        batchstats['c_mean'] = batch_mean_c
-        batchstats['a_var'] = batch_var_a
-        batchstats['b_var'] = batch_var_b
-        batchstats['c_var'] = batch_var_c
 
         updates = OrderedDict()
-        if not args.use_population_statistics:
-            alpha = 1e-2
-            for key in "abc":
-                for stat, init in zip("mean var".split(), [0, 1]):
-                    name = "%s_%s" % (key, stat)
-                    popstats[name].tag.estimand = batchstats[name]
-                    # FIXME broken
-                    #updates[popstats[name]] = (alpha * batchstats[name] +
-                    #                           (1 - alpha) * popstats[name])
-        return dict(h=h, c=c,
-                    atilde=atilde, btilde=btilde, htilde=htilde), updates, dummy_states, popstats
+        return dict(h=h, c=c), updates, dummy_states, popstats
 
 
 def construct_common_graph(situation, args, outputs, dummy_states, Wy, by, y):
@@ -346,6 +333,17 @@ def construct_common_graph(situation, args, outputs, dummy_states, Wy, by, y):
     #                                         num_examples=args.batch_size)
     #                              .get_epoch_iterator(as_dict=True)),
     #                   before_training=True, every_n_epochs=10)]
+
+    h_grads = T.grad(mse, dummy_states['h'])
+    c_grads = T.grad(mse, dummy_states['c'])
+    grad_timesubsample=1
+    grad_norms = []
+    for t in xrange(0, args.length, grad_timesubsample):
+        grad_norms.append(h_grads[t, :, :].norm(2).copy(name="grad_norm:h_%04i" % t))
+    for t in xrange(0, args.length, grad_timesubsample):
+        grad_norms.append(c_grads[t, :, :].norm(2).copy(name="grad_norm:c_%04i" % t))
+    extensions.append(TrainingDataMonitoring(
+        grad_norms, prefix="iteration", after_batch=True))
 
     return graph, extensions
 
@@ -390,17 +388,17 @@ def construct_graphs(args, nclasses, length):
                                                                                         length)
     training_graph, training_extensions = construct_common_graph("training", args, outputs, dummy_states, Wy, by, y)
 
-    args.use_population_statistics = True
-    (inf_outputs, inference_updates, dummy_states, _) = turd.construct_graph_popstats(args, x, drops_state, drops_cell,
-                                                                                      length, popstats=popstats)
-    inference_graph, inference_extensions = construct_common_graph("inference", args, inf_outputs, dummy_states, Wy, by, y)
+    #args.use_population_statistics = True
+    #(inf_outputs, inference_updates, dummy_states, _) = turd.construct_graph_popstats(args, x, drops_state, drops_cell,
+    #                                                                                  length, popstats=popstats)
+    #inference_graph, inference_extensions = construct_common_graph("inference", args, inf_outputs, dummy_states, Wy, by, y)
 
     add_role(Wy, PARAMETER)
     add_role(by, PARAMETER)
     args.use_population_statistics = False
-    return (dict(training=training_graph,      inference=inference_graph),
-            dict(training=training_extensions, inference=inference_extensions),
-            dict(training=training_updates,    inference=inference_updates))
+    return (dict(training=training_graph,      inference=training_graph),
+            dict(training=training_extensions, inference=training_extensions),
+            dict(training=training_updates,    inference=training_updates))
 
 if __name__ == "__main__":
     nclasses = 1
@@ -409,7 +407,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--num-epochs", type=int, default=100)
-    parser.add_argument("--learning-rate", type=float, default=1e-4)
+    parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--num-examples", type=int, default=10000)
     parser.add_argument("--length", type=int, default=15)
     parser.add_argument("--epsilon", type=float, default=1e-5)
@@ -458,7 +456,7 @@ if __name__ == "__main__":
                                 step_rule=step_rule)
     algorithm.add_updates(updates["training"])
     model = Model(graphs["training"].outputs[0])
-    extensions = extensions["training"] + extensions["inference"]
+    extensions = extensions["training"] #+ extensions["inference"]
 
 
     # step monitor (after epoch to limit the log size)
@@ -528,7 +526,7 @@ if __name__ == "__main__":
         DumpBest("best_valid_training_error_rate", "best.zip"),
         FinishAfter(after_n_epochs=args.num_epochs),
         #FinishIfNoImprovementAfter("best_valid_error_rate", epochs=50),
-        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=20, use_cpickle=True),
+        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=40, use_cpickle=True),
         DumpLog("log.pkl", after_epoch=True)])
 
     if not args.cluster:
