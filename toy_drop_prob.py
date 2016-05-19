@@ -316,8 +316,9 @@ class LSTM(object):
                 for stat, init in zip("mean var".split(), [0, 1]):
                     name = "%s_%s" % (key, stat)
                     popstats[name].tag.estimand = batchstats[name]
-                    updates[popstats[name]] = (alpha * batchstats[name] +
-                                               (1 - alpha) * popstats[name])
+                    # FIXME broken
+                    #updates[popstats[name]] = (alpha * batchstats[name] +
+                    #                           (1 - alpha) * popstats[name])
         return dict(h=h, c=c,
                     atilde=atilde, btilde=btilde, htilde=htilde), updates, dummy_states, popstats
 
@@ -417,7 +418,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--noise", type=float, default=None)
     parser.add_argument("--summarize", action="store_true")
-    parser.add_argument("--num-hidden", type=int, default=100)
+    parser.add_argument("--num-hidden", type=int, default=128)
     parser.add_argument("--baseline", action="store_true")
     parser.add_argument("--zoneout", action="store_true")
     parser.add_argument("--elephant", action="store_true")
