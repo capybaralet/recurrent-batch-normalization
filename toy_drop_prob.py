@@ -49,28 +49,36 @@ def orthogonal(shape):
     q = q.reshape(shape)
     return q[:shape[0], :shape[1]].astype(theano.config.floatX)
 
+
+def gen_data(length, num_examples):
+    x = np.zeros((length, num_examples, 2), dtype=np.float32)
+    y = np.zeros((num_examples, 1), dtype=np.float32)
+
+
+    for i in xrange(num_examples):
+        vals = np.random.uniform(size=length).astype(np.float32)
+        pos1 = np.random.randint(0, length / 2 , size = 1)
+        pos2 = np.random.randint(length /2, length,size = 1)
+        x[:, i, 0] = vals
+        x[pos1, i, 1] = 1.0
+        x[pos2, i, 1] = 1.0
+        y[i, 0] = x[pos1, i, 0] + x[pos2, i, 0]
+    return x, y
+
 class Adding(fuel.datasets.Dataset):
     provides_sources = ('x', 'y')
     example_iteration_scheme = None
 
-    def __init__(self, length, num_examples):
+    def __init__(self, length, num_examples, x, y):
+
+        assert x.shape[0] == length
+        assert x.shape[1] == num_examples
+        assert y.shape[0] == num_examples
         self.length = length
         self.num_examples = num_examples
+        self.x = x
+        self.y = y
         super(Adding, self).__init__()
-        self.gen_data()
-
-    def gen_data(self):
-        self.x = np.zeros((self.length, self.num_examples, 2), dtype=np.float32)
-        self.y = np.zeros((self.num_examples, 1), dtype=np.float32)
-
-        for i in xrange(self.num_examples):
-            vals = np.random.uniform(size=self.length).astype(np.float32)
-            pos1 = np.random.randint(0, self.length / 2 , size = 1)
-            pos2 = np.random.randint(self.length /2, self.length,size = 1)
-            self.x[:, i, 0] = vals
-            self.x[pos1, i, 1] = 1.0
-            self.x[pos2, i, 1] = 1.0
-            self.y[i, 0] = self.x[pos1, i, 0] + self.x[pos2, i, 0]
 
 
     def get_data(self, state=None, request=None):
@@ -118,6 +126,7 @@ class SampleDrops2(Transformer):
         return transformed_data
 
 def get_stream(which_set,
+               x, y,
                length,
                num_examples,
                batch_size,
@@ -125,8 +134,10 @@ def get_stream(which_set,
                drop_prob_state,
                for_evaluation,
                hidden_dim=256):
+    #if which_set == "train":
+    #    None
 
-    dataset = Adding(length, num_examples)
+    dataset = Adding(length, num_examples, x, y)
     stream = fuel.streams.DataStream.default_stream(
         dataset,
         iteration_scheme=fuel.schemes.ShuffledScheme(num_examples, batch_size))
@@ -256,8 +267,8 @@ class LSTM(object):
 
             ## Zoneout
             if args.zoneout:
-                h = h_n * drops + (1 - drops_state) * h
-                c = c_n * drops + (1 - drops_cell) * c
+                h = h_n * drops_state + (1 - drops_state) * h
+                c = c_n * drops_cell + (1 - drops_cell) * c
             else:
                 h = h_n
                 c = c_n
@@ -362,19 +373,19 @@ def construct_graphs(args, nclasses, length):
     x, drops_state, drops_cell, y = inputs["features"], inputs['drops_state'], inputs['drops_cell'], inputs["targets"]
 
 
-    theano.config.compute_test_value = "warn"
-    batch = next(get_stream(which_set="train",
-                            num_examples=args.num_examples,
-                            length=args.length,
-                            batch_size=args.batch_size,
-                            drop_prob_cell=args.drop_prob_cell,
-                            drop_prob_state=args.drop_prob_state,
-                            for_evaluation=False,
-                            hidden_dim=args.num_hidden).get_epoch_iterator())
-    x.tag.test_value = batch[0]
-    y.tag.test_value = batch[1]
-    drops_state.tag.test_value = batch[2]
-    drops_cell.tag.test_value = batch[3]
+    # theano.config.compute_test_value = "warn"
+    # batch = next(get_stream(which_set="train",
+    #                         num_examples=args.num_examples,
+    #                         length=args.length,
+    #                         batch_size=args.batch_size,
+    #                         drop_prob_cell=args.drop_prob_cell,
+    #                         drop_prob_state=args.drop_prob_state,
+    #                         for_evaluation=False,
+    #                         hidden_dim=args.num_hidden).get_epoch_iterator())
+    # x.tag.test_value = batch[0]
+    # y.tag.test_value = batch[1]
+    # drops_state.tag.test_value = batch[2]
+    # drops_cell.tag.test_value = batch[3]
 
     #x = x.dimshuffle(1, 0, 2)
     y = y.flatten(ndim=1)
@@ -477,7 +488,10 @@ if __name__ == "__main__":
          for name, param in model.get_parameter_dict().items()],
         data_stream=None, after_epoch=True))
 
+
+    x_train, y_train = gen_data(length=args.length, num_examples=args.num_examples)
     train_stream = get_stream(which_set="train",
+                              x=x_train, y=y_train,
                               num_examples=args.num_examples,
                               for_evaluation=True,
                               length=args.length,
@@ -486,7 +500,9 @@ if __name__ == "__main__":
                               drop_prob_cell=args.drop_prob_cell,
                               hidden_dim=args.num_hidden)
 
+    x_valid, y_valid = gen_data(length=args.length, num_examples=1000)
     valid_stream = get_stream(which_set="test",
+                              x=x_valid, y=y_valid,
                               num_examples=1000,
                               for_evaluation=True,
                               length=args.length,
@@ -498,7 +514,7 @@ if __name__ == "__main__":
 
     # performance monitor
     for situation in "training".split(): # add inference
-        for which_set in "train valid".split():
+        for which_set in "train".split():
             logger.warning("constructing %s %s monitor" % (which_set, situation))
             channels = list(graphs[situation].outputs)
             if which_set == "train":
@@ -509,18 +525,6 @@ if __name__ == "__main__":
                 channels,
                 prefix="%s_%s" % (which_set, situation), after_epoch=True,
                 data_stream=stream))
-    # for situation in "inference".split(): # add inference
-    #     for which_set in "valid".split():
-    #         logger.warning("constructing %s %s monitor" % (which_set, situation))
-    #         channels = list(graphs[situation].outputs)
-    #         if which_set == "train":
-    #             stream = train_stream
-    #         else:
-    #             stream = valid_stream
-    #         extensions.append(DataStreamMonitoring(
-    #             channels,
-    #             prefix="%s_%s" % (which_set, situation), after_epoch=True,
-    #             data_stream=stream))#, num_examples=1000)))
     extensions.extend([
         TrackTheBest("valid_training_error_rate", "best_valid_training_error_rate"),
         DumpBest("best_valid_training_error_rate", "best.zip"),
@@ -537,9 +541,11 @@ if __name__ == "__main__":
         Printing(),
         PrintingTo("log"),
     ])
+    #impoort pdb; pdb.set_trace()
 
     main_loop = MainLoop(
         data_stream= get_stream(which_set="train",
+                                x=x_train, y=y_train,
                                 num_examples=args.num_examples,
                                 for_evaluation=False,
                                 length=args.length,
