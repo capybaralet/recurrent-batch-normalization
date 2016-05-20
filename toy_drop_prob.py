@@ -250,9 +250,6 @@ class LSTM(object):
             g, f, i, o = [fn(ab[:, j * args.num_hidden:(j + 1) * args.num_hidden])
                           for j, fn in enumerate([self.activation] + 3 * [T.nnet.sigmoid])]
 
-            c = dummy_c + f * c + drops_cell * (i * g)
-            h = dummy_h + o * self.activation(c)
-
             if args.elephant:
                 c_n = dummy_c + f * c + drops_cell * (i * g)
             else:
