@@ -514,7 +514,7 @@ if __name__ == "__main__":
 
     # performance monitor
     for situation in "training".split(): # add inference
-        for which_set in "train".split():
+        for which_set in "train valid".split():
             logger.warning("constructing %s %s monitor" % (which_set, situation))
             channels = list(graphs[situation].outputs)
             if which_set == "train":
