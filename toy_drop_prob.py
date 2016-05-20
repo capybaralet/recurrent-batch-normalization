@@ -95,7 +95,7 @@ class SampleDrops2(Transformer):
                  drop_prob_state,
                  drop_prob_cell,
                  hidden_dim, is_for_test,
-                 drop_law = "constant",
+                 droplaw = "constant",
                  **kwargs):
         super(SampleDrops2, self).__init__(
             data_stream, **kwargs)
@@ -257,6 +257,12 @@ class LSTM(object):
                 c_n = dummy_c + f * c + drops_cell * (i * g)
             else:
                 c_n = dummy_c + f * c + i * g
+
+            if args.zoneout:
+                c_n = c_n * drops_cell + (1 - drops_cell) * c
+            else:
+                c_n = c_n
+
             if args.baseline:
                 c_normal, c_mean, c_var = bn(c_n, 1.0, p.c_betas, pop_means_c, pop_vars_c, args)
             else:
@@ -268,7 +274,7 @@ class LSTM(object):
             ## Zoneout
             if args.zoneout:
                 h = h_n * drops_state + (1 - drops_state) * h
-                c = c_n * drops_cell + (1 - drops_cell) * c
+                c = c_n
             else:
                 h = h_n
                 c = c_n
@@ -321,7 +327,6 @@ class LSTM(object):
 
 def construct_common_graph(situation, args, outputs, dummy_states, Wy, by, y):
 
-    import pdb; pdb.set_trace()
     ytilde = T.dot(outputs["h"][-1], Wy) + by
     yhat = ytilde[:, 0]
 
@@ -369,7 +374,6 @@ def construct_graphs(args, nclasses, length):
 
     ### graph construction
     inputs = dict(features=T.tensor3("x"), drops_state=T.tensor3('drops_state'), drops_cell=T.tensor3('drops_cell'), targets=T.matrix("y"))
-    import pdb; pdb.set_trace()
     x, drops_state, drops_cell, y = inputs["features"], inputs['drops_state'], inputs['drops_cell'], inputs["targets"]
 
 
@@ -389,8 +393,6 @@ def construct_graphs(args, nclasses, length):
 
     #x = x.dimshuffle(1, 0, 2)
     y = y.flatten(ndim=1)
-
-    import pdb; pdb.set_trace()
 
 
     args.use_population_statistics = False
