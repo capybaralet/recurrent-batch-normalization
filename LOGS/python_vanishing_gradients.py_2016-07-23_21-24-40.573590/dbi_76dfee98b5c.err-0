@@ -1,0 +1,99 @@
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+INFO (theano.gof.compilelock): Waiting for existing lock by process '132701' (I am process '132814')
+INFO (theano.gof.compilelock): To manually release the lock, delete /tmp/capybara/.theano/compiledir_Linux-2.6-el6.x86_64-x86_64-with-centos-6.8-Final-x86_64-2.7.11-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by process '132701' (I am process '132814')
+INFO (theano.gof.compilelock): To manually release the lock, delete /tmp/capybara/.theano/compiledir_Linux-2.6-el6.x86_64-x86_64-with-centos-6.8-Final-x86_64-2.7.11-64/lock_dir
+Using gpu device 0: Tesla K20m (CNMeM is disabled, cuDNN 4007)
+INFO (theano.gof.compilelock): Waiting for existing lock by process '132701' (I am process '132814')
+INFO (theano.gof.compilelock): To manually release the lock, delete /tmp/capybara/.theano/compiledir_Linux-2.6-el6.x86_64-x86_64-with-centos-6.8-Final-x86_64-2.7.11-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by process '132701' (I am process '132814')
+INFO (theano.gof.compilelock): To manually release the lock, delete /tmp/capybara/.theano/compiledir_Linux-2.6-el6.x86_64-x86_64-with-centos-6.8-Final-x86_64-2.7.11-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by process '132704' (I am process '132814')
+INFO (theano.gof.compilelock): To manually release the lock, delete /tmp/capybara/.theano/compiledir_Linux-2.6-el6.x86_64-x86_64-with-centos-6.8-Final-x86_64-2.7.11-64/lock_dir
+usage: vanishing_gradients.py [-h] [--seed SEED] [--num-epochs NUM_EPOCHS]
+                              [--learning-rate LEARNING_RATE]
+                              [--epsilon EPSILON] [--batch-size BATCH_SIZE]
+                              [--noise NOISE] [--summarize]
+                              [--num-hidden NUM_HIDDEN] [--baseline]
+                              [--zoneout] [--elephant] [--drop-prob DROP_PROB]
+                              [--lstm] [--initial-gamma INITIAL_GAMMA]
+                              [--initial-beta INITIAL_BETA] [--cluster]
+                              [--activation {relu,identity,tanh}]
+                              [--init INIT] [--continue-from CONTINUE_FROM]
+                              [--permuted]
+vanishing_gradients.py: error: unrecognized arguments: --drop_prob=.85
+
+==============NVSMI LOG==============
+
+Timestamp                           : Sat Jul 23 21:26:29 2016
+Driver Version                      : 352.79
+
+Attached GPUs                       : 8
+GPU 0000:08:00.0
+    Accounting Mode                 : Enabled
+    Accounting Mode Buffer Size     : 1920
+    Accounted Processes
+        Process ID                  : 132814
+            GPU Utilization         : 0 %
+            Memory Utilization      : 0 %
+            Max memory usage        : 78 MiB
+            Time                    : 43699 ms
+            Is Running              : 0
+

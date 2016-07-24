@@ -1,0 +1,85 @@
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+Using gpu device 0: Tesla K20m (CNMeM is disabled, cuDNN 4007)
+Traceback (most recent call last):
+  File "vanishing_gradients.py", line 420, in <module>
+    graph, extension, update = construct_graphs(args, nclasses, sequence_length)
+  File "vanishing_gradients.py", line 366, in construct_graphs
+    training_graph, training_extensions = construct_common_graph("training", args, outputs, dummy_states, Wy, by, y)
+  File "vanishing_gradients.py", line 318, in construct_common_graph
+    DumpVariables(save_str + ("%s_hiddens" % situation), graph.inputs,
+NameError: global name 'save_str' is not defined
+
+==============NVSMI LOG==============
+
+Timestamp                           : Sun Jul 24 13:21:32 2016
+Driver Version                      : 352.79
+
+Attached GPUs                       : 8
+GPU 0000:05:00.0
+    Accounting Mode                 : Enabled
+    Accounting Mode Buffer Size     : 1920
+    Accounted Processes
+        Process ID                  : 109386
+            GPU Utilization         : 0 %
+            Memory Utilization      : 0 %
+            Max memory usage        : 88 MiB
+            Time                    : 387994 ms
+            Is Running              : 0
+

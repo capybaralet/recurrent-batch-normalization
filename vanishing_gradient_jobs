@@ -1,0 +1,6 @@
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py --baseline --permuted
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py --baseline --zoneout --drop-prob=.85 --permuted
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py --baseline --elephant --drop-prob=.85 --permuted
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py  --permuted
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py --zoneout --drop-prob=.85 --permuted
+jobdispatch --gpu --queue=gpu_1 --duree=24:00H --env=THEANO_FLAGS="device=gpu,floatX=float32" --project=jvb-000-ag python vanishing_gradients.py --elephant --drop-prob=.85 --permuted

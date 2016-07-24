@@ -1,0 +1,243 @@
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30226540565
+	 test_inference_cross_entropy: 2.30226540565
+	 test_inference_error_rate: 0.9009
+	 test_training_cost: 2.30226540565
+	 test_training_cross_entropy: 2.30226540565
+	 test_training_error_rate: 0.9009
+	 time_initialization: 249.35616684
+	 train_training_cost: 2.30218815804
+	 train_training_cross_entropy: 2.30218815804
+	 train_training_error_rate: 0.90068
+	 valid_inference_cost: 2.30212688446
+	 valid_inference_cross_entropy: 2.30212688446
+	 valid_inference_error_rate: 0.8979
+	 valid_training_cost: 2.30212688446
+	 valid_training_cross_entropy: 2.30212688446
+	 valid_training_error_rate: 0.8979
+
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30230736732
+	 test_inference_cross_entropy: 2.30230736732
+	 test_inference_error_rate: 0.9007
+	 test_training_cost: 2.30230736732
+	 test_training_cross_entropy: 2.30230736732
+	 test_training_error_rate: 0.9007
+	 time_initialization: 248.732928038
+	 train_training_cost: 2.30224609375
+	 train_training_cross_entropy: 2.30224609375
+	 train_training_error_rate: 0.90114
+	 valid_inference_cost: 2.30220627785
+	 valid_inference_cross_entropy: 2.30220627785
+	 valid_inference_error_rate: 0.8982
+	 valid_training_cost: 2.30220627785
+	 valid_training_cross_entropy: 2.30220627785
+	 valid_training_error_rate: 0.8982
+
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30225515366
+	 test_inference_cross_entropy: 2.30225515366
+	 test_inference_error_rate: 0.9009
+	 test_training_cost: 2.30225515366
+	 test_training_cross_entropy: 2.30225515366
+	 test_training_error_rate: 0.9009
+	 time_initialization: 264.931143999
+	 train_training_cost: 2.30217647552
+	 train_training_cross_entropy: 2.30217647552
+	 train_training_error_rate: 0.90112
+	 valid_inference_cost: 2.30210638046
+	 valid_inference_cross_entropy: 2.30210638046
+	 valid_inference_error_rate: 0.898
+	 valid_training_cost: 2.30210638046
+	 valid_training_cross_entropy: 2.30210638046
+	 valid_training_error_rate: 0.898
+
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:a_gammas: 2.0
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:b_gammas: 2.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:c_gammas: 1.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30258226395
+	 test_inference_cross_entropy: 2.30258226395
+	 test_inference_error_rate: 0.9018
+	 test_training_cost: 2.29942774773
+	 test_training_cross_entropy: 2.29942774773
+	 test_training_error_rate: 0.894
+	 time_initialization: 295.475206137
+	 train_training_cost: 2.29965305328
+	 train_training_cross_entropy: 2.29965305328
+	 train_training_error_rate: 0.89548
+	 valid_inference_cost: 2.30258226395
+	 valid_inference_cross_entropy: 2.30258226395
+	 valid_inference_error_rate: 0.9017
+	 valid_training_cost: 2.30004763603
+	 valid_training_cross_entropy: 2.30004763603
+	 valid_training_error_rate: 0.8964
+
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:a_gammas: 2.0
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:b_gammas: 2.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:c_gammas: 1.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30258202553
+	 test_inference_cross_entropy: 2.30258202553
+	 test_inference_error_rate: 0.9021
+	 test_training_cost: 2.29941391945
+	 test_training_cross_entropy: 2.29941391945
+	 test_training_error_rate: 0.8947
+	 time_initialization: 295.245987892
+	 train_training_cost: 2.29965043068
+	 train_training_cross_entropy: 2.29965043068
+	 train_training_error_rate: 0.89546
+	 valid_inference_cost: 2.30258202553
+	 valid_inference_cross_entropy: 2.30258202553
+	 valid_inference_error_rate: 0.9027
+	 valid_training_cost: 2.30004811287
+	 valid_training_cross_entropy: 2.30004811287
+	 valid_training_error_rate: 0.8969
+
+
+-------------------------------------------------------------------------------
+BEFORE FIRST EPOCH
+-------------------------------------------------------------------------------
+Training status:
+	 batch_interrupt_received: False
+	 epoch_interrupt_received: False
+	 epoch_started: True
+	 epochs_done: 0
+	 iterations_done: 0
+	 received_first_batch: False
+	 resumed_from: None
+	 training_started: True
+Log records from the iteration 0:
+	 parameter.norm:Wa: 10.0
+	 parameter.norm:Wx: 0.999999940395
+	 parameter.norm:Wy: 3.16227769852
+	 parameter.norm:a_gammas: 2.0
+	 parameter.norm:ab_betas: 10.0
+	 parameter.norm:b_gammas: 2.0
+	 parameter.norm:by: 0.0
+	 parameter.norm:c0: 0.0
+	 parameter.norm:c_betas: 0.0
+	 parameter.norm:c_gammas: 1.0
+	 parameter.norm:h0: 0.0
+	 test_inference_cost: 2.30258202553
+	 test_inference_cross_entropy: 2.30258202553
+	 test_inference_error_rate: 0.9018
+	 test_training_cost: 2.29894471169
+	 test_training_cross_entropy: 2.29894471169
+	 test_training_error_rate: 0.8909
+	 time_initialization: 294.698442936
+	 train_training_cost: 2.29907178879
+	 train_training_cross_entropy: 2.29907178879
+	 train_training_error_rate: 0.89244
+	 valid_inference_cost: 2.30258202553
+	 valid_inference_cross_entropy: 2.30258202553
+	 valid_inference_error_rate: 0.9017
+	 valid_training_cost: 2.30002808571
+	 valid_training_cross_entropy: 2.30002808571
+	 valid_training_error_rate: 0.8987
+

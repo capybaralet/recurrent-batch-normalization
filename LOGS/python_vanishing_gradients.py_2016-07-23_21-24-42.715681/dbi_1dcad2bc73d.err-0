@@ -1,0 +1,91 @@
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+/usr/bin/lua: ...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: module 'posix' not found:
+	no field package.preload['posix']
+	no file '/software-gpu/lmod/6.0.6/libexec/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../tools/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../shells/posix.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/posix/init.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix.lua'
+	no file '/home/capybara/.luarocks/share/lua/5.1/posix/init.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix.lua'
+	no file '/home/capybara/torch/install/share/lua/5.1/posix/init.lua'
+	no file './posix.lua'
+	no file '/home/capybara/torch/install/share/luajit-2.1.0-beta1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix.lua'
+	no file '/usr/local/share/lua/5.1/posix/init.lua'
+	no file '/software-gpu/lmod/6.0.6/libexec/../lib/posix.so'
+	no file '/home/capybara/torch/install/lib/posix.so'
+	no file '/home/capybara/.luarocks/lib/lua/5.1/posix.so'
+	no file '/home/capybara/torch/install/lib/lua/5.1/posix.so'
+	no file './posix.so'
+	no file '/usr/local/lib/lua/5.1/posix.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	...software-gpu/lmod/6.0.6/libexec/../tools/fileOps.lua:35: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/myGlobals.lua:40: in main chunk
+	[C]: in function 'require'
+	/software-gpu/lmod/6.0.6/libexec/lmod:76: in main chunk
+	[C]: ?
+Using gpu device 0: Tesla K20m (CNMeM is disabled, cuDNN 4007)
+Traceback (most recent call last):
+  File "vanishing_gradients.py", line 420, in <module>
+    graph, extension, update = construct_graphs(args, nclasses, sequence_length)
+  File "vanishing_gradients.py", line 349, in construct_graphs
+    hidden_dim=args.num_hidden).get_epoch_iterator())
+  File "vanishing_gradients.py", line 107, in get_stream
+    dataset = get_dataset(which_set)
+  File "vanishing_gradients.py", line 59, in get_dataset
+    train=MNIST(which_sets=["train"], subset=slice(None, 50000)),
+  File "/rap/jvb-000-aa/stack/conda/lib/python2.7/site-packages/fuel/datasets/mnist.py", line 32, in __init__
+    file_or_path=find_in_data_path(self.filename),
+  File "/rap/jvb-000-aa/stack/conda/lib/python2.7/site-packages/fuel/utils/__init__.py", line 434, in find_in_data_path
+    raise IOError("{} not found in Fuel's data path".format(filename))
+IOError: mnist.hdf5 not found in Fuel's data path
+
+==============NVSMI LOG==============
+
+Timestamp                           : Sat Jul 23 21:25:42 2016
+Driver Version                      : 352.79
+
+Attached GPUs                       : 8
+GPU 0000:09:00.0
+    Accounting Mode                 : Enabled
+    Accounting Mode Buffer Size     : 1920
+    Accounted Processes
+        Process ID                  : 200519
+            GPU Utilization         : 0 %
+            Memory Utilization      : 0 %
+            Max memory usage        : 79 MiB
+            Time                    : 35831 ms
+            Is Running              : 0
+
