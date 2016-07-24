@@ -315,7 +315,7 @@ def construct_common_graph(situation, args, outputs, dummy_states, Wy, by, y):
 
     extensions = []
     extensions = [
-        DumpVariables("%s_hiddens" % situation, graph.inputs,
+        DumpVariables(save_str + ("%s_hiddens" % situation), graph.inputs,
                       [v.copy(name="%s%s" % (k, suffix))
                        for suffix, things in [("", outputs), ("_grad", state_grads)]
                        for k, v in things.items()],
@@ -326,7 +326,7 @@ def construct_common_graph(situation, args, outputs, dummy_states, Wy, by, y):
                                             for_evaluation=False,
                                             hidden_dim=args.num_hidden)
                                  .get_epoch_iterator(as_dict=True)),
-                      before_training=True, every_n_epochs=10)]
+                      before_training=True, every_n_epochs=1)]
 
     return graph, extensions
 
@@ -474,13 +474,20 @@ if __name__ == "__main__":
                                        batch_size=args.batch_size,
                                        drop_prob=args.drop_prob, hidden_dim=args.num_hidden)))#, num_examples=1000)))
 
+    save_str = ''
+    if not args.baseline:
+        save_str += 'BN_'
+    if args.zoneout:
+        save_str += 'zoneout_' + str(drop_prob) + '-'
+    if args.elephant:
+        save_str += 'elephant_' + str(drop_prob) + '-'
     extensions.extend([
         TrackTheBest("valid_training_error_rate", "best_valid_training_error_rate"),
         #DumpBest("best_valid_training_error_rate", "best.zip"),
         FinishAfter(after_n_epochs=args.num_epochs),
         #FinishIfNoImprovementAfter("best_valid_error_rate", epochs=50),
-        Checkpoint("checkpoint.zip", on_interrupt=False, every_n_epochs=1, use_cpickle=True),
-        DumpLog("log.pkl", after_epoch=True)])
+        Checkpoint(save_str + "checkpoint.zip", on_interrupt=False, every_n_epochs=1, use_cpickle=True),
+        DumpLog(save_str + "log.pkl", after_epoch=True)])
 
     if not args.cluster:
         extensions.append(ProgressBar())
